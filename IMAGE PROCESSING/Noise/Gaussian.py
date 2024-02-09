@@ -1,23 +1,15 @@
-import numpy as np
 import cv2
+import numpy as np
 
-def noisy(noise_typ, image):
-    if noise_typ == "gauss":
-        row, col, ch = image.shape
-        mean = 0
-        var = 0.1
-        sigma = var**0.5
-        gauss = np.random.normal(mean, sigma, (row, col, ch))
-        gauss = gauss.reshape(row, col, ch)
-        noisy = image + gauss
-        return noisy
+def add_gaussian(img,mean=0,sigma=25):
+    row,col=img.shape
+    gauss=np.random.normal(mean,sigma,(row,col))
+    noisy=np.clip(img+gauss,0,255)
+    noisy=noisy.astype(np.uint8)
+    return noisy
 
-# Read the image from 'RGB2.jpg'
-image = cv2.imread('rose.jpg')
+org_img=cv2.imread("apple.jpg",0)
 
-# Apply the noisy function with Gaussian noise
-noise = noisy('gauss', image)
-
-# Display the noisy image and wait for a key press
-cv2.imshow('Noise', noise)
+noisy_img=add_gaussian(org_img)
+cv2.imshow("Noisy Image",noisy_img)
 cv2.waitKey(0)
