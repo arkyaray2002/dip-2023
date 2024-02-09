@@ -1,32 +1,19 @@
-import random
 import cv2
 import numpy as np
 
-def add_noise(img):
-    row, col = img.shape[:2]
+def add_salt_and_paper(img , salt,paper):
+    noisy=np.copy(img)
 
-    # Add random white pixels
-    number_of_pixels = random.randint(300, 400)
-    for i in range(number_of_pixels):
-        y_coord = random.randint(0, row - 1)
-        x_coord = random.randint(0, col - 1)
-        img[y_coord][x_coord] = 255
+    salt_pixel=np.random.rand(*img.shape)<salt
+    noisy[salt_pixel]=255
 
-    # Add random black pixels
-    number_of_pixels = random.randint(300, 10000)
-    for i in range(number_of_pixels):
-        y_coord = random.randint(0, row - 1)
-        x_coord = random.randint(0, col - 1)
-        img[y_coord][x_coord] = 0
+    paper_pixel=np.random.rand(*img.shape)<paper
+    noisy[paper_pixel]=0
+    return noisy
 
-    return img
-
-# Read the image from 'RGB2.jpg'
-image = cv2.imread('apple.jpg', 0)
-
-# Apply the add_noise function to create a noisy version
-noisy_image = add_noise(image)
-
-# Display the noisy image and wait for a key press
-cv2.imshow('Noisy one', noisy_image)
+org_img=cv2.imread("apple.jpg",0)
+salt=0.02
+paper=0.02
+noisy_img=add_salt_and_paper(org_img,salt,paper)
+cv2.imshow("Noisy Image",noisy_img)
 cv2.waitKey(0)
