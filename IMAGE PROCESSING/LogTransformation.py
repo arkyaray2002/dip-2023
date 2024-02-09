@@ -1,22 +1,18 @@
-import cv2 
-import numpy as np 
-import matplotlib.pyplot as plt 
-img=cv2.imread('Taj.jpg',0) 
+import cv2
+import numpy as np
 
-histogram=cv2.calcHist([img],[0],None,[256],[0,255]) 
-plt.plot(histogram) 
-height,width=img.shape[:2] 
+img= cv2.imread("apple.jpg",0)
 
-def evaluatePixelStatic(pixel): 
-  return np.log10(pixel+1) 
-def evaluatePixelDynamic(pixel): 
-  return (255/np.log10(1+255))*np.log10(pixel+1) 
-for i in range(height): 
-  for j in range(width): 
-    img[i][j]=evaluatePixelDynamic(img[i][j]) 
+height,width=img.shape
 
-cv2.imshow('Log',img) 
-histogram=cv2.calcHist([img],[0],None,[256],[0,255]) 
-plt.plot(histogram) 
-plt.show() 
-cv2.waitKey(0) 
+c=45
+
+for i in range(height):
+    for j in range(width):
+        log_value=c*np.log(1+img[i,j])
+        img[i,j]=np.clip(log_value,0,255)
+
+img=np.uint8(img)
+
+cv2.imshow("Output",img)
+cv2.waitKey(0)
