@@ -3,7 +3,7 @@ import numpy as np
 
 img=cv2.imread("apple.jpg",0)
 
-def mean_filter(image,kernal):
+def min_filter(image,kernal):
     height,width=image.shape[:2]
 
     result=np.zeros_like(image,dtype=np.float32)
@@ -16,4 +16,4 @@ def mean_filter(image,kernal):
     cv2.imshow("Output",result)
     cv2.waitKey(0)
 
-mean_filter(img,3)
+min_filter(img,3)
